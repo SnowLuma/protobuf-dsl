@@ -197,10 +197,6 @@ const bytes = apply<UserProfile>(user, encode);
 - `pb<fieldNumber, Type>` — 单值字段
 - `pb_repeated<fieldNumber, Type>` — 重复字段（→ `Type[]`）
 
-说明：
-- 所有 64 位整数类型在 TypeScript 中统一映射为 `bigint`
-- `sint_32` / `sint_64` 使用 ZigZag 编码，适用于频繁出现负数的场景
-
 ## 包入口
 
 | 路径 | 用途 |
