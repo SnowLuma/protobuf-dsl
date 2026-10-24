@@ -4,3 +4,4 @@
 .claude/settings.local.json
 /example/dist
 /example/node_modules
+bench

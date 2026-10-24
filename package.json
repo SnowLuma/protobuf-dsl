@@ -22,16 +22,23 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "tsup src/index.ts src/runtime.ts --format esm --dts",
+    "build": "tsup src/index.ts src/runtime.ts --format esm --dts --clean",
+    "typecheck": "tsc --noEmit && tsc --project example/tsconfig.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "bench": "npx tsx bench/index.ts"
+    "bench:perf": "npm run build && node bench/performance.mjs",
+    "format": "prettier --write src __tests__ \"bench/*.mjs\" protobuf.d.ts",
+    "format:check": "prettier --check src __tests__ \"bench/*.mjs\" protobuf.d.ts",
+    "test:example": "npm run build && vite build --config example/vite.config.ts && node example/dist/main.js",
+    "bench:gen": "node bench/generate.mjs",
+    "bench": "npm run build && npm run bench:gen && node bench/compare.mjs",
+    "bench:readme": "node bench/report.mjs"
   },
   "dependencies": {
-    "typescript": "^5.5.0"
+    "typescript": "^6.0.3"
   },
   "peerDependencies": {
-    "vite": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0"
+    "vite": "^8.0.0"
   },
   "peerDependenciesMeta": {
     "vite": {
@@ -39,9 +46,21 @@
     }
   },
   "devDependencies": {
-    "@types/node": "^25.4.0",
-    "tsup": "^8.0.0",
-    "vite": "^6.0.0",
-    "vitest": "^3.0.0"
+    "@protobuf-ts/plugin": "2.11.1",
+    "@protobuf-ts/runtime": "2.11.1",
+    "@protocolbuffers/protoc-gen-js": "4.0.3",
+    "@types/node": "^26.6.5",
+    "google-protobuf": "4.0.3",
+    "prettier": "3.9.10",
+    "protobufjs": "8.8.1",
+    "protobufjs-cli": "2.7.1",
+    "protoc": "36.2.0",
+    "tsup": "^9.0.0",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 110
   }
 }

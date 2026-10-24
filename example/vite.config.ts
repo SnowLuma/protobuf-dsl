@@ -1,15 +1,19 @@
 import { defineConfig } from 'vite';
-import protobufVite from 'protobuf-fastdsl/vite';
+import { fileURLToPath } from 'node:url';
+import protobufVite from '../dist/index.js';
+import metadata from '../package.json' with { type: 'json' };
 
 export default defineConfig({
+  root: fileURLToPath(new URL('.', import.meta.url)),
   plugins: [protobufVite()],
+  resolve: { alias: { [metadata.name]: fileURLToPath(new URL('../dist/runtime.js', import.meta.url)) } },
   build: {
     lib: {
       entry: 'src/main.ts',
       formats: ['es'],
       fileName: 'main',
     },
-    rollupOptions: {
+    rolldownOptions: {
       output: {
         entryFileNames: 'main.js',
       },

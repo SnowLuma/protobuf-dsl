@@ -6,11 +6,14 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "noEmit": true
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true
   },
   "include": [
     "src",
-    "test",
+    "__tests__",
     "protobuf.d.ts"
   ],
   "exclude": [
