@@ -72,8 +72,6 @@ const user = protobuf_decode_UserProfile(bytes);
 
 如果忘记配置插件，`protobuf_encode` / `protobuf_decode` 会在运行时抛出错误提示。
 
-编码结果是 `Uint8Array`，可能是缓冲区中的一段视图；后续编码不会覆盖已返回的数据。直接传递该数组即可。需要独立、长度精确的 `ArrayBuffer`，或要向 Worker 转移底层缓冲区时，先使用 `bytes.slice()` 创建独立副本；直接访问 `bytes.buffer` 时须同时使用 `byteOffset` 和 `byteLength`。
-
 ## 跨文件类型引用
 
 接口定义和编解码调用可以在不同文件中，插件会自动跟踪 import 链：
