@@ -23,6 +23,7 @@ export interface TypeValue {
   values?: TypeValue[];
   fieldNumber?: number;
   repeated?: boolean;
+  explicitPresence?: boolean;
   origin?: { node: ts.TypeNode; source: ts.SourceFile; env: TypeEnvironment };
   application?: { declaration: ts.Declaration; arguments: TypeValue[] };
 }

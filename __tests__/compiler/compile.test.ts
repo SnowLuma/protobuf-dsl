@@ -198,7 +198,7 @@ describe('semantic compiler', () => {
   it('supports generic field-number aliases and preserves mapped optionality', () => {
     expect(
       run(`
-      type Field<N extends number, T> = pb<N, T>;
+      type Field<N extends number, T> = pb_optional<N, T>;
       interface Msg { value?: Field<3, uint_32>; }
       type Copy<T> = { [K in keyof T]: T[K] };
       export const result = [...protobuf_encode<Copy<Msg>>({ value: 0 })];
@@ -238,7 +238,7 @@ describe('semantic compiler', () => {
 
   it('preserves explicitly present optional default values and quoted field names', () => {
     const result = run(`
-      interface Msg { 'a-b'?: pb<1, uint_32>; flag?: pb<2, bool>; text?: pb<3, string>; big?: pb<4, uint_64>; '__proto__'?: pb<5, string>; }
+      interface Msg { 'a-b'?: pb_optional<1, uint_32>; flag?: pb_optional<2, bool>; text?: pb_optional<3, string>; big?: pb_optional<4, uint_64>; '__proto__'?: pb<5, string>; }
       const input = { 'a-b': 0, flag: false, text: '', big: 0n, ['__proto__']: 'safe' };
       export const result = protobuf_decode<Msg>(protobuf_encode<Msg>(input));
     `).result;

@@ -2,6 +2,9 @@
 export type pb<_ProtoNumber extends number, Type> = Type;
 /** Marks a repeated protobuf field: `ids: pb_repeated<fieldNumber, Type>` → Type[] */
 export type pb_repeated<_ProtoNumber extends number, Type> = Type[];
+/** Marks a singular field with explicit wire presence, including zero/default values.
+ * Null and undefined are omitted; TypeScript `?` alone does not enable wire presence. */
+export type pb_optional<_ProtoNumber extends number, Type> = Type;
 
 export type uint_32 = number;
 export type int_32 = number;

@@ -106,7 +106,8 @@ export function fieldBlock(field: ProtobufField, index: number, shared: boolean)
 }
 
 function presence(field: ProtobufField, value: string): string {
-  if (field.isOptional || field.isMessage) return `${value} != null`;
+  // TypeScript optionality controls missing decoded values, not wire presence.
+  if (field.explicitPresence || field.isMessage) return `${value} != null`;
   if (field.typeName === 'bool') return `${value} === true`;
   if (field.typeName === 'bytes') return `${value} != null && ${value}.length > 0`;
   const empty = field.typeName === 'string' ? '""' : field.typeName.endsWith('_64') ? '0n' : '0';

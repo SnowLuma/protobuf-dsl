@@ -250,17 +250,18 @@ export class SchemaResolver {
     )
       return this.objects.declaration(ref, args, source, env, node);
     if (primitiveNames.has(name)) return value('primitive', name);
-    if (name === 'pb' || name === 'pb_repeated') {
+    if (name === 'pb' || name === 'pb_repeated' || name === 'pb_optional') {
       if (args.length !== 2) fail(node, `${name} requires a field number and a field type.`);
       const fieldNumber = this.type(args[0], source, env);
       const payload = this.type(args[1], source, env);
       const marker = this.container('marker', [payload], node, source, env);
       return {
         ...marker,
-        key: `${marker.key}:${fieldNumber.key}`,
+        key: `${name}:${marker.key}:${fieldNumber.key}`,
         dynamic: fieldNumber.dynamic || marker.dynamic,
         fieldNumber: Number(fieldNumber.name),
         repeated: name === 'pb_repeated',
+        explicitPresence: name === 'pb_optional',
       };
     }
     if (name === 'Array' || name === 'ReadonlyArray')

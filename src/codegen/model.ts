@@ -13,6 +13,7 @@ export interface ProtobufField {
   isMessage: boolean;
   isOptional: boolean;
   isRepeated: boolean;
+  explicitPresence?: boolean;
 }
 
 export interface ProtobufMessage {

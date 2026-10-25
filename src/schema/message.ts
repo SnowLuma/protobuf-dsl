@@ -40,7 +40,7 @@ export class MessageBuilder {
         marker = members[0];
       }
       if (marker.kind !== 'marker')
-        fail(property.node, `Field ${fieldName} must use pb<N, T> or pb_repeated<N, T>.`);
+        fail(property.node, `Field ${fieldName} must use pb<N, T>, pb_optional<N, T> or pb_repeated<N, T>.`);
       const number = marker.fieldNumber!;
       if (
         !Number.isInteger(number) ||
@@ -78,6 +78,7 @@ export class MessageBuilder {
         isMessage,
         isRepeated: !!repeated,
         isOptional: optional,
+        explicitPresence: marker.explicitPresence,
       });
     }
     fields.sort((a, b) => a.fieldNumber - b.fieldNumber);

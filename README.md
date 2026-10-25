@@ -194,6 +194,27 @@ const bytes = apply<UserProfile>(user, encode);
 字段标记：
 - `pb<fieldNumber, Type>` — 单值字段
 - `pb_repeated<fieldNumber, Type>` — 重复字段（→ `Type[]`）
+- `pb_optional<fieldNumber, Type>` — 显式保留字段存在性，包含零值和默认值
+
+普通 `pb<>` 标量会省略 `0`、`0n`、`false`、空字符串和空字节数组，即使字段带有
+TypeScript 的 `?` 或允许 `null`/`undefined`。`pb_optional<>` 会编码这些默认值，只在
+值为 `null`/`undefined` 时省略字段。缺失的 TypeScript 可选单值字段仍解码为 `null`。
+
+```ts
+import type { pb, pb_optional, uint_32 } from 'protobuf-fastdsl';
+
+interface State {
+  ordinary?: pb<1, uint_32>; // 0 会被省略
+  explicit?: pb_optional<2, uint_32>; // 0 会编码为 10 00（十六进制）
+}
+```
+
+迁移已有 schema 时，如果依赖 `field?: pb<...>` 编码默认值，请改用
+`field?: pb_optional<...>`。TypeScript 的可选性与线上的字段存在性分别控制。
+
+负数 `int_32` 按照 [Protobuf 规范](https://protobuf.dev/programming-guides/encoding/#signed-integers)
+进行符号扩展，编码为十字节 varint（不含字段 tag）；解码器也兼容旧版五字节表示。
+`sint_32` 使用独立的 ZigZag 编码，不能在已有协议中直接替换 `int_32`。
 
 ## 包入口
 
